@@ -4,3 +4,4 @@ resources:
 - ../models/demo-1106-cpu/catalog
 - ../models/demo-run-cpu/catalog
 - ../models/e2e-ccp-cpu/catalog
+- ../models/qwen3-0-6b/catalog
