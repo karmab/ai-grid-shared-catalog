@@ -1,0 +1,40 @@
+apiVersion: serving.kserve.io/v1alpha2
+kind: LLMInferenceService
+metadata:
+  annotations:
+    ai-grid/version: "1"
+    openshift.io/display-name: Qwen3-0.6B
+  labels:
+    ai-grid/model: qwen3-0-6b
+    app.kubernetes.io/managed-by: ai-grid-provider-backend
+  name: qwen3-0-6b
+  namespace: ai-grid-internal-models
+spec:
+  model:
+    name: qwen3-0-6b
+    uri: hf://Qwen/Qwen3-0.6B
+  replicas: 2
+  router:
+    gateway:
+      refs:
+      - name: openshift-ai-inference
+        namespace: openshift-ingress
+    route: {}
+    scheduler: {}
+  template:
+    containers:
+    - args:
+      - --max-model-len=2048
+      env:
+      - name: OMP_NUM_THREADS
+        value: "4"
+      - name: VLLM_CPU_KVCACHE_SPACE
+        value: "1"
+      name: main
+      resources:
+        limits:
+          cpu: "4"
+          memory: 16Gi
+        requests:
+          cpu: "2"
+          memory: 12Gi
